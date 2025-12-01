@@ -1,0 +1,26 @@
+{
+  "name": "aws-simple-form-web-app-cdk",
+  "version": "1.0.0",
+  "private": true,
+  "license": "ISC",
+  "bin": {
+    "cdk": "bin/cdk.js"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "cdk": "cdk",
+    "synth": "cdk synth",
+    "deploy": "cdk deploy",
+    "bootstrap": "cdk bootstrap"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "aws-cdk": "^2.1033.0",
+    "aws-cdk-lib": "2.225.0",
+    "constructs": "^10.3.0",
+    "esbuild": "^0.21.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  }
+}

@@ -1,0 +1,59 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  NODE_VERSION: '20'
+
+permissions:
+  #  request and use OpenID Connect (OIDC) tokens
+  id-token: write
+  # read repository contents
+  contents: read
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    environment: gorlug-sandbox
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend
+
+      - name: Install lambda dependencies
+        run: npm ci --prefix lambda
+
+      - name: Install CDK dependencies
+        run: npm ci --prefix cdk
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to AWS
+        env:
+          ALLOWED_IP_CIDR: ${{ vars.ALLOWED_IP }}/32
+        run: npm run deploy SimpleFormWebAppStack --require-approval never

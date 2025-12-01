@@ -1,0 +1,7 @@
+{
+  "app": "node dist/bin/cdk.js",
+  "context": {
+    "@aws-cdk/core:newStyleStackSynthesis": true,
+    "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1_2_2021": true
+  }
+}

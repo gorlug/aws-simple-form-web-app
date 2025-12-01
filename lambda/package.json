@@ -1,0 +1,20 @@
+{
+  "name": "aws-simple-form-web-app-lambda",
+  "version": "1.0.0",
+  "private": true,
+  "license": "ISC",
+  "main": "dist/handler.js",
+  "types": "dist/handler.d.ts",
+  "scripts": {
+    "build": "tsc -p .",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "aws-lambda": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.158",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.5.3"
+  }
+}

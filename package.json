@@ -1,0 +1,21 @@
+{
+  "name": "aws-simple-form-web-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple React form hosted on S3/CloudFront with API Gateway + Lambda, provisioned via CDK",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm run build:frontend && npm run build:lambda && npm run build:cdk",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:lambda": "npm --prefix lambda run build",
+    "build:cdk": "npm --prefix cdk run build",
+    "synth": "npm run build && npm --prefix cdk run synth",
+    "deploy": "npm run build && npm --prefix cdk run deploy",
+    "bootstrap": "npm --prefix cdk run bootstrap"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
+}

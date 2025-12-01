@@ -1,0 +1,6 @@
+POST {{url}}/api/survey
+Content-Type: application/json
+
+{
+  "flavor": "chocolate"
+}
