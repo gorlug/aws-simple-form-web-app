@@ -70,7 +70,7 @@ Remember that only IPs in the configured allow‑list will be able to access the
 
 ### WAF IP Allow‑List
 
-- The Web ACL is created with a dedicated IP set that contains the allowed IPv4 addresses.
+- The Web ACL is created with a dedicated IP set that contains the allowed IPv4 or IPv6 addresses.
 - All requests are blocked by default; a single rule (`IpAllowListRule`) allows only traffic from the configured IPs.
 - To use this in your own environment, adjust the IP addresses in the CDK stack to match your needs.
 
@@ -80,8 +80,8 @@ The CDK bootstrap script requires you to provide the IP/CIDR to allow through th
 
 You can use either of these variables (both are supported; `ALLOWED_IP_CIDR` is preferred):
 
-- `ALLOWED_IP_CIDR` — an explicit IPv4 CIDR string, e.g. `203.0.113.7/32`.
-- `ALLOWED_IP` — a plain IPv4 address without mask; the CDK will automatically normalize it to `/32` (single host). If you include a mask (e.g. `203.0.113.0/24`) it will be used as provided. Prefer `ALLOWED_IP_CIDR` so you control the mask explicitly.
+- `ALLOWED_IP_CIDR` — an explicit IPv4 or IPv6 CIDR string, e.g. `203.0.113.7/32` or `2001:db8::1/128`.
+- `ALLOWED_IP` — a plain IPv4 or IPv6 address without mask; the CDK will automatically normalize it to `/32` (IPv4 single host) or `/128` (IPv6 single host). If you include a mask (e.g. `203.0.113.0/24` or `2001:db8::/32`) it will be used as provided. Prefer `ALLOWED_IP_CIDR` so you control the mask explicitly.
 
 Examples to set your current public IPv4 address as a single‑host CIDR and deploy:
 
@@ -111,10 +111,33 @@ Alternatively, using `ALLOWED_IP` (automatic `/32`):
   npm run deploy
   ```
 
+**IPv6 Examples:**
+
+To set your current public IPv6 address:
+
+- macOS/Linux (bash/zsh):
+  ```bash
+  export ALLOWED_IP_CIDR="$(curl -6 -s https://api64.ipify.org)/128"
+  npm run deploy
+  ```
+
+- Windows PowerShell:
+  ```powershell
+  $env:ALLOWED_IP_CIDR = (Invoke-RestMethod -Uri https://api64.ipify.org) + "/128"
+  npm run deploy
+  ```
+
+Or manually set a specific IPv6 address:
+
+```bash
+export ALLOWED_IP_CIDR="2001:db8::1/128"
+npm run deploy
+```
+
 Notes:
 
-- This stack currently supports IPv4 only for the WAF IP set.
-- You can supply a broader IPv4 CIDR if needed (e.g. `203.0.113.0/24`), but keep the list as tight as possible.
+- This stack supports both IPv4 and IPv6 addresses for the WAF IP set.
+- You can supply a broader CIDR if needed (e.g. `203.0.113.0/24` for IPv4 or `2001:db8::/32` for IPv6), but keep the list as tight as possible.
 - For CI/non‑interactive deploys, setting one of the env vars is the only step needed; the CDK app reads it directly.
 
 ---

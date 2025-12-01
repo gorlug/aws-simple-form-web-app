@@ -15,7 +15,7 @@ import {CloudFrontLogToCloudWatch} from './cloudfront-log-to-cloudwatch'
 
 export interface WebAppStackProps extends StackProps {
   /**
-   * Single IPv4 CIDR (e.g. `203.0.113.4/32`) that is allowed to access the app via CloudFront.
+   * Single IPv4 or IPv6 CIDR (e.g. `203.0.113.4/32` or `2001:db8::1/128`) that is allowed to access the app via CloudFront.
    */
   readonly allowedIpCidr: string
 }
@@ -128,12 +128,19 @@ export class WebAppStack extends Stack {
     new CfnOutput(this, 'ApiInvokeUrl', {value: api.urlForPath('/survey')})
   }
 
+  private getIpAddressVersion(cidr: string): 'IPV4' | 'IPV6' {
+    // Determine if the CIDR is IPv4 or IPv6 based on the presence of colons
+    return cidr.includes(':') ? 'IPV6' : 'IPV4'
+  }
+
   private createWaf() {
+    const ipAddressVersion = this.getIpAddressVersion(this.allowedIpCidr)
+    
     const ipSet = new wafv2.CfnIPSet(this, 'CloudFrontIpWhitelist', {
       addresses: [
         this.allowedIpCidr,
       ],
-      ipAddressVersion: 'IPV4',
+      ipAddressVersion,
       scope: 'CLOUDFRONT',
       name: 'CloudFrontIpWhitelist',
     })
