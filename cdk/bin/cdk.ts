@@ -69,6 +69,22 @@ function isIpv6(ip: string): boolean {
   return true
 }
 
+function expandIpv6(ip: string): string {
+  // Expand IPv6 address to full form (e.g., 2001:db8::1 becomes 2001:0db8:0000:0000:0000:0000:0000:0001)
+  // Handle :: compression
+  if (ip.includes('::')) {
+    const [left, right] = ip.split('::')
+    const leftParts = left ? left.split(':') : []
+    const rightParts = right ? right.split(':') : []
+    const missingParts = 8 - leftParts.length - rightParts.length
+    const middle = Array(missingParts).fill('0000')
+    const allParts = [...leftParts, ...middle, ...rightParts]
+    return allParts.map(part => part.padStart(4, '0')).join(':')
+  }
+  // No compression, just pad each group to 4 digits
+  return ip.split(':').map(part => part.padStart(4, '0')).join(':')
+}
+
 function isValidIpv6Cidr(cidr: string): boolean {
   const [ip, mask] = cidr.split('/')
   if (!ip || mask === undefined) return false
@@ -112,7 +128,8 @@ async function resolveAllowedIpCidr(): Promise<string> {
       return `${ipEnv}/32`
     }
     if (isIpv6(ipEnv)) {
-      return `${ipEnv}/128`
+      const expandIpv = expandIpv6(ipEnv)
+      return `${expandIpv}/128`
     }
     
     throw new Error(
