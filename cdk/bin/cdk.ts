@@ -128,7 +128,7 @@ async function main() {
   const app = new App()
 
   const allowedIpCidr = await resolveAllowedIpCidr()
-  console.log('bbq allowedIpCidr', allowedIpCidr)
+  console.log('allowedIpCidr', allowedIpCidr)
 
   new WebAppStack(app, 'SimpleFormWebAppStack', {
     description: 'S3 + CloudFront hosted React app with API Gateway (/api) backed by Lambda (ice cream picker)',
