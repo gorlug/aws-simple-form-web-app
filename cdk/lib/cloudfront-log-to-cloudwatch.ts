@@ -13,6 +13,7 @@ export interface CloudFrontLogToCloudWatchProps {
   outputFormat: 'json' | 'w3c' | 'raw' | 'plain'
 }
 
+// https://github.com/aws/aws-cdk/issues/32279#issuecomment-3176394090
 export class CloudFrontLogToCloudWatch extends Construct {
   public readonly logGroup: LogGroup;
   constructor(scope: Construct, id: string, props: CloudFrontLogToCloudWatchProps) {
