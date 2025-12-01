@@ -55,5 +55,5 @@ jobs:
 
       - name: Deploy to AWS
         env:
-          ALLOWED_IP_CIDR: ${{ vars.ALLOWED_IP }}
+          ALLOWED_IP: ${{ vars.ALLOWED_IP }}
         run: npm run deploy SimpleFormWebAppStack --require-approval never
