@@ -79,7 +79,7 @@ function isValidIpv6Cidr(cidr: string): boolean {
 }
 
 function isValidIpCidr(cidr: string): boolean {
-  return isValidIpv4Cidr(cidr) || isValidIpv4Cidr(cidr)
+  return isValidIpv4Cidr(cidr) || isValidIpv6Cidr(cidr)
 }
 
 async function resolveAllowedIpCidr(): Promise<string> {
