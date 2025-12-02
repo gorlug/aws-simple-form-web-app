@@ -142,7 +142,7 @@ export class WebAppStack extends Stack {
       ],
       ipAddressVersion,
       scope: 'CLOUDFRONT',
-      name: 'CloudFrontIpWhitelist',
+      name: `CloudFrontIpWhitelist-${ipAddressVersion}`,
     })
 
     const waf = new wafv2.CfnWebACL(this, 'CloudFrontWebAcl', {
