@@ -135,8 +135,8 @@ export class WebAppStack extends Stack {
 
   private createWaf() {
     const ipAddressVersion = this.getIpAddressVersion(this.allowedIpCidr)
-    
-    const ipSet = new wafv2.CfnIPSet(this, 'CloudFrontIpWhitelist', {
+
+    const ipSet = new wafv2.CfnIPSet(this, `CloudFrontIpWhitelist-${ipAddressVersion}`, {
       addresses: [
         this.allowedIpCidr,
       ],
