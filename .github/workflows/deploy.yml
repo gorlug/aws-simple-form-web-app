@@ -56,4 +56,4 @@ jobs:
       - name: Deploy to AWS
         env:
           ALLOWED_IP: ${{ vars.ALLOWED_IP }}
-        run: npm run deploy SimpleFormWebAppStack --require-approval never
+        run: npm run deploy SimpleFormWebAppStack --all --require-approval never

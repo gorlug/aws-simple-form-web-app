@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { App } from 'aws-cdk-lib'
 import { WebAppStack } from '../lib/web-app-stack'
+import { AlbStack } from '../lib/alb-stack'
 
 function isIpv4(ip: string): boolean {
   // Basic IPv4 validation (0-255 for each octet)
@@ -149,6 +150,14 @@ async function main() {
 
   new WebAppStack(app, 'SimpleFormWebAppStack', {
     description: 'S3 + CloudFront hosted React app with API Gateway (/api) backed by Lambda (ice cream picker)',
+    allowedIpCidr,
+    env: {
+      region: 'us-east-1',
+    }
+  })
+
+  new AlbStack(app, 'SimpleAlbStack', {
+    description: 'Application Load Balancer with WAF IP whitelist',
     allowedIpCidr,
     env: {
       region: 'us-east-1',

@@ -11,7 +11,7 @@
     "watch": "tsc -w -p .",
     "cdk": "cdk",
     "synth": "cdk synth",
-    "deploy": "cdk deploy",
+    "deploy": "cdk deploy --all",
     "bootstrap": "cdk bootstrap"
   },
   "devDependencies": {
